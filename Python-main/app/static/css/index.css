@@ -1,0 +1,89 @@
+   /* Estilos iniciales para animaciones */
+        #hero-section {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        
+        /* Animaciones para tarjetas */
+        .card-left {
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-right {
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+        
+        /* Efectos hover mejorados */
+        .modern-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .modern-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .info-card-bg {
+            background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+        }
+        
+        .product-card-bg {
+            background: linear-gradient(135deg, #22C55E 0%, #06B6D4 100%);
+        }
+        
+        /* Animación de pulso para iconos */
+        .pulse-icon {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Efecto glassmorphism */
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        #first {
+            display: inline-block;
+        }
+        #first span {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        /* Controlar tamaño de imágenes */
+        .modern-card img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .glass-effect img {
+            max-height: 48px;
+            object-fit: contain;
+        }

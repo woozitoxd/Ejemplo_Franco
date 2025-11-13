@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanSA - Carrito de Compras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'smoke-white': '#F9FAFB',
+                        'pro-blue': '#2563EB',
+                        'light-blue': '#60A5FA',
+                        'soft-gray': '#94A3B8',
+                        'warm-green': '#22C55E',
+                        'light-teal': '#06B6D4',
+                        'dark-teal': '#1E3A8A',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../static/css/nav-liquid-glass.css">
+</head>
+<body class="bg-smoke-white min-h-screen">
+    
+    <!-- Include Navigation Component -->
+    {% include 'components/nav.html' %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8 max-w-7xl">
+        
+        <!-- Header del Carrito -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-dark-teal mb-2">Mi Carrito de Compras</h1>
+            <p class="text-soft-gray text-lg">Revisa y gestiona tus productos seleccionados</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            
+            <!-- Lista de Productos en el Carrito -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-dark-teal">Productos en tu carrito</h2>
+                        <span class="bg-pro-blue text-white px-3 py-1 rounded-full text-sm font-semibold">4 artículos</span>
+                    </div>
+
+                    <!-- Producto 1 -->
+                    <div class="cart-item flex items-center gap-4 p-4 border border-gray-100 rounded-xl mb-4 hover:shadow-lg transition-all duration-300">
+                        <div class="w-20 h-20 bg-gradient-to-br from-pro-blue to-light-blue rounded-lg flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 5.16-1 9-5.45 9-11V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-dark-teal">Detergente Líquido Premium</h3>
+                            <p class="text-soft-gray">Limpieza profunda - 2L</p>
+                            <p class="text-pro-blue font-semibold">SKU: CLN-001</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item1', -1)">-</button>
+                            <span id="qty-item1" class="font-bold text-lg w-8 text-center">2</span>
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item1', 1)">+</button>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-dark-teal">$15.990</p>
+                            <button class="text-red-500 hover:text-red-700 text-sm transition-colors" onclick="removeItem('item1')">Eliminar</button>
+                        </div>
+                    </div>
+
+                    <!-- Producto 2 -->
+                    <div class="cart-item flex items-center gap-4 p-4 border border-gray-100 rounded-xl mb-4 hover:shadow-lg transition-all duration-300">
+                        <div class="w-20 h-20 bg-gradient-to-br from-warm-green to-light-teal rounded-lg flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7.01 5 5 7.01 5 9.5S7.01 14 9.5 14 14 11.99 14 9.5 11.99 5 9.5 5z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-dark-teal">Desinfectante Multiusos</h3>
+                            <p class="text-soft-gray">Elimina 99.9% bacterias - 1L</p>
+                            <p class="text-pro-blue font-semibold">SKU: CLN-002</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item2', -1)">-</button>
+                            <span id="qty-item2" class="font-bold text-lg w-8 text-center">1</span>
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item2', 1)">+</button>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-dark-teal">$12.490</p>
+                            <button class="text-red-500 hover:text-red-700 text-sm transition-colors" onclick="removeItem('item2')">Eliminar</button>
+                        </div>
+                    </div>
+
+                    <!-- Producto 3 -->
+                    <div class="cart-item flex items-center gap-4 p-4 border border-gray-100 rounded-xl mb-4 hover:shadow-lg transition-all duration-300">
+                        <div class="w-20 h-20 bg-gradient-to-br from-soft-gray to-dark-teal rounded-lg flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-dark-teal">Jabón Antibacterial</h3>
+                            <p class="text-soft-gray">Protección avanzada - Pack 6 unidades</p>
+                            <p class="text-pro-blue font-semibold">SKU: CLN-003</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item3', -1)">-</button>
+                            <span id="qty-item3" class="font-bold text-lg w-8 text-center">3</span>
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item3', 1)">+</button>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-dark-teal">$8.990</p>
+                            <button class="text-red-500 hover:text-red-700 text-sm transition-colors" onclick="removeItem('item3')">Eliminar</button>
+                        </div>
+                    </div>
+
+                    <!-- Producto 4 -->
+                    <div class="cart-item flex items-center gap-4 p-4 border border-gray-100 rounded-xl mb-4 hover:shadow-lg transition-all duration-300">
+                        <div class="w-20 h-20 bg-gradient-to-br from-light-teal to-pro-blue rounded-lg flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A2.25,2.25 0 0,1 14.25,11A2.25,2.25 0 0,1 12,13.25A2.25,2.25 0 0,1 9.75,11A2.25,2.25 0 0,1 12,8.75Z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-dark-teal">Limpiador de Pisos</h3>
+                            <p class="text-soft-gray">Aroma lavanda - 1.5L</p>
+                            <p class="text-pro-blue font-semibold">SKU: CLN-004</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item4', -1)">-</button>
+                            <span id="qty-item4" class="font-bold text-lg w-8 text-center">1</span>
+                            <button class="qty-btn bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors" onclick="updateQuantity('item4', 1)">+</button>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-dark-teal">$9.990</p>
+                            <button class="text-red-500 hover:text-red-700 text-sm transition-colors" onclick="removeItem('item4')">Eliminar</button>
+                        </div>
+                    </div>
+
+                    <!-- Botón continuar comprando -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <button class="bg-soft-gray hover:bg-pro-blue text-white px-6 py-3 rounded-xl font-semibold transition-colors duration-300 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Continuar Comprando
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen del Pedido -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 sticky top-6">
+                    <h3 class="text-2xl font-bold text-dark-teal mb-6">Resumen del Pedido</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between">
+                            <span class="text-soft-gray">Subtotal (7 artículos)</span>
+                            <span id="subtotal" class="font-semibold">$47.460</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-soft-gray">Envío</span>
+                            <span class="font-semibold text-warm-green">Gratis</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-soft-gray">IVA (19%)</span>
+                            <span id="iva" class="font-semibold">$9.017</span>
+                        </div>
+                        <hr class="border-gray-200">
+                        <div class="flex justify-between text-xl font-bold">
+                            <span class="text-dark-teal">Total</span>
+                            <span id="total" class="text-dark-teal">$56.477</span>
+                        </div>
+                    </div>
+
+                    <!-- Cupón de descuento -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-dark-teal mb-2">Código de descuento</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="coupon-code" placeholder="Ingresa tu código" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pro-blue focus:border-pro-blue">
+                            <button onclick="applyCoupon()" class="bg-pro-blue hover:bg-dark-teal text-white px-4 py-2 rounded-lg font-semibold transition-colors">Aplicar</button>
+                        </div>
+                    </div>
+
+
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!---INTEGRACION API MERCADO PAGO(mas adelante)-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!--########################################-->
+                    <!-- Botón de compra -->
+                    <button onclick="checkout()" class="w-full bg-gradient-to-r from-warm-green to-light-teal hover:from-light-teal hover:to-warm-green text-white py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-4">
+                        <span class="flex items-center justify-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            Proceder al Pago                            
+                        </span>
+                    </button>
+
+                    <!-- Métodos de pago -->
+                    <div class="text-center">
+                        <p class="text-sm text-soft-gray mb-3">Métodos de pago aceptados</p>
+                        <div class="flex justify-center gap-3">
+                            <div class="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">VISA</span>
+                            </div>
+                            <div class="w-10 h-6 bg-gradient-to-r from-red-600 to-orange-600 rounded flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">MC</span>
+                            </div>
+                            <div class="w-10 h-6 bg-gradient-to-r from-blue-700 to-blue-900 rounded flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">PP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos Recomendados -->
+        <div class="mt-12">
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                <h3 class="text-2xl font-bold text-dark-teal mb-6">También te puede interesar</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Producto Recomendado 1 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="w-full h-24 bg-gradient-to-br from-pro-blue to-light-blue rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 5.16-1 9-5.45 9-11V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-dark-teal mb-2">Toallas de Papel</h4>
+                        <p class="text-soft-gray text-sm mb-3">Extra absorción - Pack 12</p>
+                        <p class="text-lg font-bold text-pro-blue mb-3">$6.990</p>
+                        <button class="w-full bg-pro-blue hover:bg-dark-teal text-white py-2 px-4 rounded-lg font-semibold transition-colors">Agregar al Carrito</button>
+                    </div>
+
+                    <!-- Producto Recomendado 2 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="w-full h-24 bg-gradient-to-br from-warm-green to-light-teal rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7.01 5 5 7.01 5 9.5S7.01 14 9.5 14 14 11.99 14 9.5 11.99 5 9.5 5z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-dark-teal mb-2">Spray Limpiador</h4>
+                        <p class="text-soft-gray text-sm mb-3">Vidrios y cristales - 500ml</p>
+                        <p class="text-lg font-bold text-pro-blue mb-3">$4.990</p>
+                        <button class="w-full bg-pro-blue hover:bg-dark-teal text-white py-2 px-4 rounded-lg font-semibold transition-colors">Agregar al Carrito</button>
+                    </div>
+
+                    <!-- Producto Recomendado 3 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="w-full h-24 bg-gradient-to-br from-soft-gray to-dark-teal rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-dark-teal mb-2">Gel Antibacterial</h4>
+                        <p class="text-soft-gray text-sm mb-3">70% alcohol - 250ml</p>
+                        <p class="text-lg font-bold text-pro-blue mb-3">$3.490</p>
+                        <button class="w-full bg-pro-blue hover:bg-dark-teal text-white py-2 px-4 rounded-lg font-semibold transition-colors">Agregar al Carrito</button>
+                    </div>
+
+                    <!-- Producto Recomendado 4 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="w-full h-24 bg-gradient-to-br from-light-teal to-pro-blue rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A2.25,2.25 0 0,1 14.25,11A2.25,2.25 0 0,1 12,13.25A2.25,2.25 0 0,1 9.75,11A2.25,2.25 0 0,1 12,8.75Z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-dark-teal mb-2">Esponjas Multiuso</h4>
+                        <p class="text-soft-gray text-sm mb-3">Pack 8 unidades</p>
+                        <p class="text-lg font-bold text-pro-blue mb-3">$2.990</p>
+                        <button class="w-full bg-pro-blue hover:bg-dark-teal text-white py-2 px-4 rounded-lg font-semibold transition-colors">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
+  
+
+    <!-- Librerías externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script> 
+</body>
+</html>

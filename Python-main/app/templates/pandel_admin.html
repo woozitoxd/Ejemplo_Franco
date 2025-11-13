@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanSA - Panel de Administración</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'smoke-white': '#F9FAFB',        // Blanco humo (fondo general)
+                        'pro-blue': '#2563EB',           // Azul profesional (elementos principales)
+                        'light-blue': '#60A5FA',         // Azul claro (suavizar elementos)
+                        'soft-gray': '#94A3B8',          // Gris suave (equilibrio neutral)
+                        'warm-green': '#22C55E',         // Verde cálido (acentos positivos)
+                        'light-teal': '#06B6D4',         // Turquesa claro (variedad)
+                        'dark-teal': '#1E3A8A',          // Azul petróleo (solo acentos mínimos)
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar para el To Do List */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(37, 99, 235, 0.1); /* pro-blue/10 */
+            border-radius: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #2563EB, #60A5FA); /* pro-blue to light-blue */
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #1E3A8A, #2563EB); /* dark-teal to pro-blue */
+        }
+        
+        /* Animación para el botón del micrófono cuando está escuchando */
+        .listening-pulse {
+            animation: pulse-mic 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-mic {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); /* light-teal */
+            }
+            70% { 
+                box-shadow: 0 0 0 10px rgba(6, 182, 212, 0); 
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); 
+            }
+        }
+        
+        /* Efecto hover suave para las tareas */
+        .task-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .task-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Estilo para el input con mejor focus */
+        .task-input:focus {
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* pro-blue/10 */
+        }
+        
+        /* Animación para el drag and drop */
+        .dragging {
+            opacity: 0.7;
+            transform: rotate(5deg) scale(1.05);
+            z-index: 1000;
+        }
+        
+        .drag-over {
+            border-top: 3px solid #2563EB !important; /* pro-blue */
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="bg-smoke-white min-h-screen">
+
+    <!-- Include Navigation Component -->
+    {% include 'components/nav.html' %}
+
+    <!-- Contenido principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Título de bienvenida -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-dark-teal mb-2">Dashboard CleanSA</h2>
+            <p class="text-soft-gray">Panel de administración - Sistema de gestión integral</p>
+        </div>
+
+        <!-- Navegación Principal del Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            
+            <!-- Card Productos -->
+            <div class="nav-card bg-smoke-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-pro-blue">
+                <div class="bg-pro-blue p-6 text-smoke-white">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="bg-smoke-white bg-opacity-20 rounded-full p-4">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 7H18V6C18 5.45 17.55 5 17 5H7C6.45 5 6 5.45 6 6V7H5C3.9 7 3 7.9 3 9V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V9C21 7.9 20.1 7 19 7Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center">Productos</h3>
+                    <p class="text-center mt-2 opacity-90">Catálogo e inventario</p>
+                </div>
+                <div class="p-6 bg-smoke-white">
+                    <p class="text-pro-blue mb-6 text-center">
+                        Gestiona el catálogo de productos higiénicos y controla el inventario.
+                    </p>
+                    <div class="space-y-2">
+                        <a href="{{ url_for('products.list_products') }}" 
+                           class="block w-full bg-pro-blue hover:bg-dark-teal text-smoke-white text-center py-2 px-6 rounded-lg font-semibold transition-colors duration-300">
+                            Ver Catálogo
+                        </a>
+                        <a href="{{ url_for('products.panel') }}" 
+                           class="block w-full bg-light-blue hover:bg-pro-blue text-smoke-white text-center py-2 px-6 rounded-lg font-semibold transition-colors duration-300">
+                            Gestionar Productos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Usuarios -->
+            <div class="nav-card bg-smoke-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-light-teal">
+                <div class="bg-light-teal p-6 text-smoke-white">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="bg-smoke-white bg-opacity-20 rounded-full p-4">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.996 2.996 0 0 0 17.05 7H16c-.8 0-1.54.31-2.1.83l-3.88 3.88C9.43 12.3 9 13.1 9 14v6h2v-6c0-.55.45-1 1-1h1v7h7zM12.5 11.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6C4.67 6 4 6.67 4 7.5S4.67 9 5.5 9 7 8.33 7 7.5 6.33 6 5.5 6zm.5 9.5c0-.83-.67-1.5-1.5-1.5S3 14.67 3 15.5 3.67 17 4.5 17 6 16.33 6 15.5zm0 0V18c0 1.1.9 2 2 2h3v-2H8v-2.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center">Usuarios</h3>
+                    <p class="text-center mt-2 opacity-90">Gestión de usuarios</p>
+                </div>
+                <div class="p-6 bg-smoke-white">
+                    <p class="text-light-teal mb-6 text-center">
+                        Administra los usuarios del sistema, clientes y personal autorizado.
+                    </p>
+                    <div class="space-y-2">
+                       
+                        <a href="{{ url_for('users.panel') }}" 
+                           class="block w-full bg-light-blue hover:bg-light-teal text-smoke-white text-center py-2 px-6 rounded-lg font-semibold transition-colors duration-300">
+                            Ver usuarios del sistema    
+                        </a>
+                    </div>
+                </div>
+            </div>
+ 
+
+        </div>
+
+        <!-- Estadísticas del Sistema -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-dark-teal mb-6">Estadísticas del Sistema</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Total Productos -->
+                <div class="bg-smoke-white rounded-xl shadow-lg p-6 border-l-4 border-pro-blue hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-pro-blue bg-opacity-10 rounded-full p-3 mr-4">
+                            <svg class="w-8 h-8 text-pro-blue" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 7H18V6C18 5.45 17.55 5 17 5H7C6.45 5 6 5.45 6 6V7H5C3.9 7 3 7.9 3 9V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V9C21 7.9 20.1 7 19 7Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-dark-teal">156</p>
+                            <p class="text-soft-gray text-sm">Total Productos</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-warm-green text-sm font-medium">+12% este mes</span>
+                    </div>
+                </div>
+
+                <!-- Total Empleados -->
+                <div class="bg-smoke-white rounded-xl shadow-lg p-6 border-l-4 border-warm-green hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-warm-green bg-opacity-10 rounded-full p-3 mr-4">
+                            <svg class="w-8 h-8 text-warm-green" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-dark-teal">23</p>
+                            <p class="text-soft-gray text-sm">Empleados Activos</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-warm-green text-sm font-medium">+2 nuevos</span>
+                    </div>
+                </div>
+
+                <!-- Ventas del Mes -->
+                <div class="bg-smoke-white rounded-xl shadow-lg p-6 border-l-4 border-light-teal hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-light-teal bg-opacity-10 rounded-full p-3 mr-4">
+                            <svg class="w-8 h-8 text-light-teal" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-dark-teal">$45,630</p>
+                            <p class="text-soft-gray text-sm">Ventas Mensuales</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-warm-green text-sm font-medium">+18% vs mes anterior</span>
+                    </div>
+                </div>
+
+                <!-- Usuarios Registrados -->
+                <div class="bg-smoke-white rounded-xl shadow-lg p-6 border-l-4 border-light-blue hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-light-blue bg-opacity-10 rounded-full p-3 mr-4">
+                            <svg class="w-8 h-8 text-light-blue" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.996 2.996 0 0 0 17.05 7H16c-.8 0-1.54.31-2.1.83l-3.88 3.88C9.43 12.3 9 13.1 9 14v6h2v-6c0-.55.45-1 1-1h1v7h7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-dark-teal">128</p>
+                            <p class="text-soft-gray text-sm">Usuarios Registrados</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-warm-green text-sm font-medium">+5 nuevos esta semana</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sección de Gestión y Actividad -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Acciones Rápidas -->
+            <div class="bg-smoke-white rounded-xl shadow-lg p-6 border border-soft-gray">
+                <h3 class="text-xl font-bold text-dark-teal mb-6 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-pro-blue" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13 3C15.21 3 17 4.79 17 7C17 9.21 15.21 11 13 11C10.79 11 9 9.21 9 7C9 4.79 10.79 3 13 3ZM4 14V19H2V14H4ZM9 14V19H7V14H9ZM14 14V19H12V14H14ZM19 14V19H17V14H19Z"/>
+                    </svg>
+                    Acciones Rápidas
+                </h3>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="openModalBtn" class="bg-pro-blue hover:bg-dark-teal text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                        Agregar Producto
+                    </button>
+                    
+                                     
+                    <button class="bg-light-teal hover:bg-pro-blue text-white p-4 rounded-lg text-center transition-colors group">
+                        <svg class="w-8 h-8 mx-auto mb-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM14 17H7V15H14V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z"/>
+                        </svg>
+                        <p class="font-medium">Generar Reporte</p>
+                    </button>                                 
+                </div>
+            </div>
+
+                <!-- Lista de Tareas -->
+                <div id="taskSection" class="bg-gradient-to-br from-smoke-white via-gray-50 to-gray-100 rounded-3xl shadow-2xl border border-pro-blue/20 p-8 space-y-8 backdrop-blur-sm">                
+                    <!-- Header del To Do List -->
+                    <div class="text-center space-y-4">
+                        <div class="flex items-center justify-center space-x-3">
+                            <div class="bg-gradient-to-r from-pro-blue to-light-blue p-3 rounded-2xl shadow-lg">
+                                <svg class="w-7 h-7 text-smoke-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-3xl font-bold bg-gradient-to-r from-pro-blue to-light-blue bg-clip-text text-transparent">
+                                To Do List Administrativo
+                            </h3>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-light-teal/10 to-pro-blue/10 rounded-2xl border border-light-teal/30 p-4">
+                            <p id="contadorTareas" class="text-lg text-dark-teal font-semibold">
+                                Tareas Pendientes: 0
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Formulario para nueva tarea -->
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-soft-gray/30 shadow-inner">
+                        <h4 class="text-lg font-semibold text-dark-teal mb-4 flex items-center">
+                            <span class="bg-pro-blue/10 p-2 rounded-lg mr-3">
+                                <svg class="w-5 h-5 text-pro-blue" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                            </span>
+                            Nueva Tarea
+                        </h4>
+                        
+                        <div class="flex gap-3">
+                            <input 
+                                id="tareaInput" 
+                                type="text" 
+                                placeholder="Describe tu tarea aquí..." 
+                                class="task-input flex-1 px-4 py-3 bg-smoke-white border border-soft-gray/50 rounded-xl text-dark-teal placeholder-soft-gray focus:ring-2 focus:ring-pro-blue/50 focus:border-pro-blue transition-all duration-200 outline-none shadow-sm"
+                            >
+                            <button 
+                                id="agregarBtn" 
+                                class="px-6 py-3 bg-gradient-to-r from-pro-blue to-light-blue hover:from-light-blue hover:to-light-teal text-smoke-white font-bold rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-pro-blue/30 flex items-center space-x-2"
+                                title="Agregar tarea"
+                            >
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                <span>Agregar</span>
+                            </button>
+                            <button 
+                                id="micButton"
+                                class="w-12 h-12 bg-gradient-to-r from-gray-100 to-smoke-white hover:from-smoke-white hover:to-gray-50 text-light-teal border border-light-teal/50 hover:border-light-teal rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-light-teal/20 flex items-center justify-center"
+                                title="Agregar tarea por voz"
+                            >
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2s-2-.9-2-2V4c0-1.1.9-2 2-2zm0 15c-2.7 0-5.4-1.1-6-2.4v2.4H4v-6h1.5c0 3 2.5 5.4 5.5 5.4s5.5-2.4 5.5-5.4H18v6h-2v-2.4c-.6 1.3-3.3 2.4-6 2.4z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Tareas -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-lg font-semibold text-dark-teal flex items-center">
+                                <span class="bg-warm-green/10 p-2 rounded-lg mr-3">
+                                    <svg class="w-5 h-5 text-warm-green" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                                    </svg>
+                                </span>
+                                Mis Tareas
+                            </h4>
+                            
+                            <!-- Botones de control -->
+                            <div class="flex space-x-2">
+                                <button 
+                                    onclick="marcarTodasCompletadas()"
+                                    class="px-3 py-2 bg-gradient-to-r from-warm-green/20 to-warm-green/10 hover:from-warm-green/30 hover:to-warm-green/20 text-warm-green hover:text-green-700 text-sm rounded-lg border border-warm-green/30 hover:border-warm-green/50 transition-all duration-200 transform hover:scale-105 flex items-center space-x-1 shadow-sm"
+                                    title="Marcar todas como completadas"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                                    </svg>
+                                    <span>Todas</span>
+                                </button>
+                                <button 
+                                    onclick="desmarcarTodas()"
+                                    class="px-3 py-2 bg-gradient-to-r from-light-blue/20 to-light-blue/10 hover:from-light-blue/30 hover:to-light-blue/20 text-light-blue hover:text-blue-700 text-sm rounded-lg border border-light-blue/30 hover:border-light-blue/50 transition-all duration-200 transform hover:scale-105 flex items-center space-x-1 shadow-sm"
+                                    title="Desmarcar todas las tareas"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                                    </svg>
+                                    <span>Reset</span>
+                                </button>
+                                <button 
+                                    onclick="eliminarCompletadas()"
+                                    class="px-3 py-2 bg-gradient-to-r from-red-500/20 to-red-500/10 hover:from-red-500/30 hover:to-red-500/20 text-red-500 hover:text-red-700 text-sm rounded-lg border border-red-500/30 hover:border-red-500/50 transition-all duration-200 transform hover:scale-105 flex items-center space-x-1 shadow-sm"
+                                    title="Eliminar tareas completadas"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                    </svg>
+                                    <span>Limpiar</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-smoke-white to-gray-50 rounded-2xl p-6 min-h-[350px] max-h-[450px] overflow-y-auto border border-soft-gray/30 shadow-inner custom-scrollbar">
+                            <ul id="listaTareas" class="space-y-3"></ul>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+        <!-- Gráfico y Resumen de Ventas CleanSA -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+            <h3 class="text-xl font-bold text-dark-teal mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-pro-blue" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 9.2H3V19H5V9.2ZM10.6 5H8.4V19H10.6V5ZM16.2 13H14V19H16.2V13ZM21.8 8H19.6V19H21.8V8Z"/>
+                </svg>
+                Análisis de Ventas CleanSA
+            </h3>
+            
+            <!-- Dashboard de ventas -->
+            <div class="bg-gradient-to-r from-pro-blue via-light-blue to-light-teal rounded-lg p-8 text-center">
+                <div class="text-white">
+                    <h4 class="text-2xl font-bold mb-2">Crecimiento Sostenido</h4>
+                    <p class="text-lg opacity-90">+25% comparado con el mes anterior</p>
+                    
+                    <!-- Métricas principales -->
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-3xl font-bold">$45,630</p>
+                            <p class="text-sm opacity-80">Este Mes</p>
+                            <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
+                                <div class="bg-warm-green h-2 rounded-full w-4/5"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-3xl font-bold">$36,480</p>
+                            <p class="text-sm opacity-80">Mes Anterior</p>
+                            <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
+                                <div class="bg-light-teal h-2 rounded-full w-3/5"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-3xl font-bold">127</p>
+                            <p class="text-sm opacity-80">Productos Vendidos</p>
+                            <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
+                                <div class="bg-warm-green h-2 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Indicadores de tendencia -->
+                    <div class="mt-6 flex justify-center items-center space-x-4 text-sm">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 14l5-5 5 5z"/>
+                            </svg>
+                            <span>Tendencia positiva</span>
+                        </div>
+                        <div class="opacity-75">•</div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span>Calidad CleanSA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Modal para Agregar/Editar Producto (oculto por defecto) -->
+    <div id="productoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-8 m-4 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-dark-teal">Agregar Producto</h3>
+                <button id="closeModalBtn" class="text-soft-gray hover:text-dark-teal">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-dark-teal mb-2">Nombre del Producto</label>
+                    <input type="text" class="w-full border border-soft-gray rounded-lg px-4 py-2 focus:ring-2 focus:ring-pro-blue" 
+                           placeholder="Ej: Detergente Premium">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-dark-teal mb-2">Descripción</label>
+                    <textarea class="w-full border border-soft-gray rounded-lg px-4 py-2 focus:ring-2 focus:ring-pro-blue" 
+                              rows="3" placeholder="Descripción del producto"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-dark-teal mb-2">Precio</label>
+                        <input type="number" step="0.01" class="w-full border border-soft-gray rounded-lg px-4 py-2 focus:ring-2 focus:ring-pro-blue" 
+                               placeholder="0.00">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-dark-teal mb-2">Stock</label>
+                        <input type="number" class="w-full border border-soft-gray rounded-lg px-4 py-2 focus:ring-2 focus:ring-pro-blue" 
+                               placeholder="0">
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" id="cancelModalBtn" 
+                            class="flex-1 bg-soft-gray hover:bg-gray-500 text-white py-3 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            class="flex-1 bg-pro-blue hover:bg-dark-teal text-white py-3 rounded-lg transition-colors">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/panel_productos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/panelamin.js') }}"></script>
+     
+</body>
+</html>

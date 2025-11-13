@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanSA - Productos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'smoke-white': '#F9FAFB',        // Blanco humo (fondo general)
+                        'pro-blue': '#2563EB',           // Azul profesional (elementos principales)
+                        'light-blue': '#60A5FA',         // Azul claro (suavizar elementos)
+                        'soft-gray': '#94A3B8',          // Gris suave (equilibrio neutral)
+                        'warm-green': '#22C55E',         // Verde cálido (acentos positivos)
+                        'light-teal': '#06B6D4',         // Turquesa claro (variedad)
+                        'dark-teal': '#1E3A8A',          // Azul petróleo (solo acentos mínimos)
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../static/css/nav-liquid-glass.css">
+</head>
+<body class="bg-smoke-white min-h-screen">
+    
+    <!-- Include Navigation Component -->
+    {% include 'components/nav.html' %}
+
+
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-4xl font-bold text-dark-teal mb-8">Nuestros Productos</h1>
+        
+        {% if productos %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!---una tarjeta por cada producto--->
+                {% for producto in productos %}
+                    {% include 'components/producto.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600">No hay productos disponibles en este momento.</p>
+        {% endif %}
+        
+    </main>
+    
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
+        <!-- Librerías externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!---COMPONENETE DEL NAV---->
+
+<div class="nav-container">
+    
+    <header class="liquid-glass-nav">
+        <div class="nav-glow"></div>
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div id="main-title" class="flex items-center nav-logo-group">
+                    <div id="title" class="liquid-glass-logo">
+                        <div class="logo-shimmer"></div>
+                        <svg class="w-8 h-8 text-white logo-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L13.09 7.26L18 4L14.74 9.09L20 10L14.74 10.91L18 16L13.09 12.74L12 18L10.91 12.74L6 16L9.26 10.91L4 10L9.26 9.09L6 4L10.91 7.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-lg">
+                        <h1 class="text-3xl font-bold nav-title-text">
+                            <a href="{{ url_for('main.home') }}" class="hover:text-cyan-400 transition-all duration-300">CleanSA</a>
+                        </h1>
+                        <p class="nav-subtitle">Productos Higiénicos de Calidad</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation Menu -->
+                <nav class="hidden md:flex items-center space-x-6 sticky-top">
+                    <a href="{{ url_for('main.home') }}" class="nav-link-glass">
+                        <span class="nav-link-content">Inicio</span>
+                        <span class="nav-link-hover"></span>
+                    </a>
+                    <a href="{{ url_for('main.about') }}" class="nav-link-glass">
+                        <span class="nav-link-content">Nosotros</span>
+                        <span class="nav-link-hover"></span>
+                    </a>
+                    <a href="{{ url_for('products.list_products') }}" class="nav-link-glass">
+                        <span class="nav-link-content">Productos</span>
+                        <span class="nav-link-hover"></span>
+                    </a>
+
+                    {% if current_user.is_authenticated %}
+                        <!-- Opciones para usuario autenticado -->
+                        
+                        {% if not current_user.es_admin %}
+                            <!-- Solo mostrar Mi Perfil si es cliente -->
+                            <a href="{{ url_for('users.perfil') }}" class="nav-link-glass">
+                                <span class="nav-link-content">Perfil</span>
+                                <span class="nav-link-hover"></span>
+                            </a>
+
+                            <!--MOSTRAR SOLO SI HAY ALGO EN EL CARRITO-->
+                            {% if current_user.carrito and current_user.carrito|length > 0 %}
+                                <a href="{{ url_for('users.carrito') }}" class="nav-link-glass nav-cart-link">
+                                    <span class="nav-link-content">Carrito</span>
+                                    <span class="nav-link-hover"></span>
+                                    <!--Span con cantidad de productos del carrito-->
+                                    <span class="cart-badge">{{ current_user.carrito|length }}</span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        
+                        {% if current_user.es_admin %}
+                            <!-- Solo mostrar Panel Admin si es administrador -->
+                            <div class="nav-separator"></div>
+                            <a href="{{ url_for('admin.index') }}" class="nav-btn-glass nav-btn-admin">
+                                <span class="btn-glow"></span>
+                                <span class="btn-content">Panel Admin</span>
+                            </a>
+                        {% endif %}
+                        
+                        <div class="nav-separator"></div>
+                        
+                        <a href="{{ url_for('auth.logout') }}" class="nav-btn-glass nav-btn-logout">
+                            <span class="btn-glow"></span>
+                            <span class="btn-content">LogOut</span>
+                        </a>
+                    {% else %}
+                        <!-- Opciones para usuario no autenticado -->
+                        <a href="{{ url_for('auth.login') }}" class="nav-btn-glass nav-btn-login">
+                            <span class="btn-glow"></span>
+                            <span class="btn-content">Login</span>
+                        </a>
+                    {% endif %}
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="mobile-menu-btn">
+                        <div class="hamburger-line"></div>
+                        <div class="hamburger-line"></div>
+                        <div class="hamburger-line"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu-glass hidden">
+                <div class="flex flex-col space-y-3">
+                    <a href="{{ url_for('main.home') }}" class="mobile-nav-link">
+                        <span class="mobile-link-glow"></span>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="{{ url_for('products.list_products') }}" class="mobile-nav-link">
+                        <span class="mobile-link-glow"></span>
+                        <span>Productos</span>
+                    </a>
+                    
+                    {% if current_user.is_authenticated %}
+                        <!-- Opciones móvil para usuario autenticado -->
+                        
+                        {% if not current_user.es_admin %}
+                            <!-- Solo mostrar Mi Perfil si es cliente -->
+                            <a href="{{ url_for('users.perfil') }}" class="mobile-nav-link">
+                                <span class="mobile-link-glow"></span>
+                                <span>Mi Perfil</span>
+                            </a>
+                        {% endif %}
+                        
+                        {% if current_user.es_admin %}
+                            <a href="{{ url_for('admin.index') }}" class="mobile-nav-btn mobile-btn-admin">
+                                <span class="mobile-btn-glow"></span>
+                                <span>Panel Admin</span>
+                            </a>
+                        {% endif %}
+                        
+                        <div class="mobile-user-info">
+                            <span class="mobile-user-glow"></span>
+                            <span>Hola, {{ current_user.nombre }}</span>
+                        </div>
+                        <a href="{{ url_for('auth.logout') }}" class="mobile-nav-btn mobile-btn-logout">
+                            <span class="mobile-btn-glow"></span>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    {% else %}
+                        <!-- Opciones móvil para usuario no autenticado -->
+                        <a href="{{ url_for('auth.login') }}" class="mobile-nav-btn mobile-btn-login">
+                            <span class="mobile-btn-glow"></span>
+                            <span>Login</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        // Mobile menu toggle with smooth animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenuButton.classList.toggle('active');
+                });
+            }
+            
+            // Animación especial para el logo CleanSA con efecto liquid
+            const logoElement = document.querySelector('#title');
+            if (logoElement) {
+                logoElement.addEventListener('mouseenter', () => {
+                    anime({
+                        targets: '#title',
+                        scale: 1.15,
+                        rotate: '360deg',
+                        duration: 600,
+                        easing: 'easeOutElastic(1, .6)'
+                    });
+                    
+                    anime({
+                        targets: '#title .logo-icon',
+                        scale: [1, 1.2, 1],
+                        duration: 800,
+                        easing: 'easeInOutQuad'
+                    });
+                });
+                
+                logoElement.addEventListener('mouseleave', () => {
+                    anime({
+                        targets: '#title',
+                        scale: 1,
+                        rotate: '0deg',
+                        duration: 400,
+                        easing: 'easeOutBack'
+                    });
+                });
+            }
+            
+            // Efecto de parallax sutil en el nav al hacer scroll
+            let lastScroll = 0;
+            const header = document.querySelector('.liquid-glass-nav');
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    header.style.transform = 'translateY(-10px)';
+                    header.style.opacity = '0.95';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                    header.style.opacity = '1';
+                }
+                
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+</div>

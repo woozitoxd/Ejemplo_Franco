@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanSA - Productos Higiénicos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'smoke-white': '#F9FAFB',        // Blanco humo (fondo general)
+                        'pro-blue': '#2563EB',           // Azul profesional (elementos principales)
+                        'light-blue': '#60A5FA',         // Azul claro (suavizar elementos)
+                        'soft-gray': '#94A3B8',          // Gris suave (equilibrio neutral)
+                        'warm-green': '#22C55E',         // Verde cálido (acentos positivos)
+                        'light-teal': '#06B6D4',         // Turquesa claro (variedad)
+                        'dark-teal': '#1E3A8A',          // Azul petróleo (solo acentos mínimos)
+                        // Mantener colores originales por compatibilidad
+                        'clean-blue': '#0077BE',
+                        'clean-green': '#00C851',
+                        'clean-light': '#F5F8FA',
+                        'clean-gray': '#6C757D'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/nav-liquid-glass.css">
+</head>
+<body class="bg-smoke-white min-h-screen" data-page="home">
+    
+    <!-- Include Navigation Component -->
+    {% include 'components/nav.html' %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 max-w-6xl page-content">
+        
+        <!-- Hero Section -->
+        <div class="nav-card rounded-2xl shadow-lg p-8 text-center mb-16 fade-in border border-pro-blue">
+            <h2 class="text-4xl md:text-5xl font-bold text-dark-teal mb-4">
+                Bienvenido a <span id="first" class="text-pro-blue">CleanSA</span>
+            </h2>
+            <p class="text-xl text-pro-blue mb-8 max-w-3xl mx-auto">
+                Tu empresa líder en productos higiénicos de alta calidad. Accede a nuestro sistema de gestión integral.
+            </p>
+        </div>
+
+        <!-- Navigation Cards -->
+        <div class="flex flex-col lg:flex-row gap-12 mb-20 justify-center items-stretch">
+            
+            <!-- About Card -->
+            <div class="card-left modern-card rounded-3xl overflow-hidden border border-pro-blue/20 group max-w-md mx-auto lg:mx-0 backdrop-blur-sm">
+                <div class="info-card-bg p-10 text-white relative overflow-hidden">
+                    <!-- Efectos decorativos de fondo -->
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -translate-y-20 translate-x-20"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full translate-y-16 -translate-x-16"></div>
+                    
+                    <div class="relative z-10 text-center">
+                        <div class="flex items-center justify-center mb-8">
+                            <div class="glass-effect rounded-2xl p-6 group-hover:scale-110 transition-all duration-500 pulse-icon">
+                                <img src="../static/images/info.png" alt="Información" class="w-12 h-12 object-contain">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 tracking-wide">Información Corporativa</h3>
+                        <p class="text-blue-100 text-lg opacity-90 leading-relaxed">Conoce nuestra empresa y nuestros valores</p>
+                    </div>
+                </div>
+                
+                <div class="p-8 bg-gradient-to-b from-white via-smoke-white to-blue-50">
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-pro-blue">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                            <span class="font-medium">Historia de la empresa</span>
+                        </div>
+                        <div class="flex items-center text-pro-blue">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                            <span class="font-medium">Misión y visión</span>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ url_for('main.about') }}" 
+                       class="block w-full bg-gradient-to-r from-pro-blue via-blue-600 to-dark-teal hover:from-dark-teal hover:via-blue-700 hover:to-pro-blue text-white text-center py-5 px-6 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105 hover:shadow-2xl shadow-lg group">
+                        <span class="flex items-center justify-center space-x-2">
+                            <span>Ver Información</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Productos Card -->
+            <div class="card-right modern-card rounded-3xl overflow-hidden border border-warm-green/20 group max-w-md mx-auto lg:mx-0 backdrop-blur-sm">
+                <div class="product-card-bg p-10 text-white relative overflow-hidden">
+                    <!-- Efectos decorativos de fondo -->
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -translate-y-20 translate-x-20"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full translate-y-16 -translate-x-16"></div>
+                    
+                    <div class="relative z-10 text-center">
+                        <div class="flex items-center justify-center mb-8">
+                            <div class="glass-effect rounded-2xl p-6 group-hover:scale-110 transition-all duration-500 pulse-icon">
+                                <img src="../static/images/cart.png" alt="Carrito" class="w-12 h-12 object-contain">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 tracking-wide">Catálogo de Productos</h3>
+                        <p class="text-green-100 text-lg opacity-90 leading-relaxed">Descubre nuestra amplia gama de productos</p>
+                    </div>
+                </div>
+                
+                <div class="p-8 bg-gradient-to-b from-white via-smoke-white to-green-50">
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-warm-green">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                            <span class="font-medium">Productos de limpieza</span>
+                        </div>
+                        <div class="flex items-center text-warm-green">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                            <span class="font-medium">Artículos higiénicos</span>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ url_for('products.list_products') }}" 
+                       class="block w-full bg-gradient-to-r from-warm-green via-green-500 to-light-teal hover:from-light-teal hover:via-green-600 hover:to-warm-green text-white text-center py-5 px-6 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105 hover:shadow-2xl shadow-lg group">
+                        <span class="flex items-center justify-center space-x-2">
+                            <span>Ver Productos</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Information Section -->
+        <div class="bg-smoke-white rounded-2xl shadow-xl overflow-hidden border border-light-blue">
+            <div class="bg-light-blue text-smoke-white p-8">
+                <h3 class="text-3xl font-bold text-center mb-4">CleanSA - Calidad que Perdura</h3>
+                <p class="text-center text-pro-blue text-lg max-w-3xl mx-auto opacity-90">
+                    Comprometidos con la higiene y limpieza desde hace más de una década
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 p-10">
+                <!-- Productos -->
+                <div class="info-card card-left text-center p-8 modern-card rounded-2xl border border-pro-blue/20 hover:border-pro-blue/40 group">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-pro-blue to-blue-700 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-pro-blue rounded-full opacity-20 group-hover:scale-150 transition-all duration-500"></div>
+                    </div>
+                    <h4 class="font-bold text-2xl text-dark-teal mb-4 group-hover:text-pro-blue transition-colors duration-300">Productos</h4>
+                    <p class="text-pro-blue leading-relaxed group-hover:text-dark-teal transition-colors duration-300">Amplia gama de productos de limpieza profesional</p>
+                    <div class="mt-4 h-1 w-0 bg-gradient-to-r from-pro-blue to-blue-700 rounded-full group-hover:w-full transition-all duration-500 mx-auto"></div>
+                </div>
+
+                <!-- Calidad -->
+                <div class="info-card card-right text-center p-8 modern-card rounded-2xl border border-warm-green/20 hover:border-warm-green/40 group">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-warm-green to-green-600 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-warm-green rounded-full opacity-20 group-hover:scale-150 transition-all duration-500"></div>
+                    </div>
+                    <h4 class="font-bold text-2xl text-warm-green mb-4 group-hover:text-green-600 transition-colors duration-300">Calidad</h4>
+                    <p class="text-green-700 leading-relaxed group-hover:text-warm-green transition-colors duration-300">Certificaciones internacionales ISO</p>
+                    <div class="mt-4 h-1 w-0 bg-gradient-to-r from-warm-green to-green-600 rounded-full group-hover:w-full transition-all duration-500 mx-auto"></div>
+                </div>
+
+                <!-- Servicio -->
+                <div class="info-card card-left text-center p-8 modern-card rounded-2xl border border-light-teal/20 hover:border-light-teal/40 group">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-light-teal to-cyan-600 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-light-teal rounded-full opacity-20 group-hover:scale-150 transition-all duration-500"></div>
+                    </div>
+                    <h4 class="font-bold text-2xl text-light-teal mb-4 group-hover:text-cyan-600 transition-colors duration-300">Servicio</h4>
+                    <p class="text-cyan-700 leading-relaxed group-hover:text-light-teal transition-colors duration-300">Atención al cliente especializada 24/7</p>
+                    <div class="mt-4 h-1 w-0 bg-gradient-to-r from-light-teal to-cyan-600 rounded-full group-hover:w-full transition-all duration-500 mx-auto"></div>
+                </div>
+
+                <!-- Sostenibilidad -->
+                <div class="info-card card-right text-center p-8 modern-card rounded-2xl border border-soft-gray/20 hover:border-soft-gray/40 group">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-soft-gray to-gray-600 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9m0 9c-5 0-9-4-9-9s4-9 9-9"/>
+                            </svg>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-soft-gray rounded-full opacity-20 group-hover:scale-150 transition-all duration-500"></div>
+                    </div>
+                    <h4 class="font-bold text-2xl text-soft-gray mb-4 group-hover:text-gray-600 transition-colors duration-300">Eco-Friendly</h4>
+                    <p class="text-gray-700 leading-relaxed group-hover:text-soft-gray transition-colors duration-300">Productos 100% biodegradables</p>
+                    <div class="mt-4 h-1 w-0 bg-gradient-to-r from-soft-gray to-gray-600 rounded-full group-hover:w-full transition-all duration-500 mx-auto"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+  <!-- Footer -->
+   {% include 'components/footer.html' %}
+
+
+    <!-- Librerías externas -->
+    <script src="{{ url_for('static', filename='js/anime.min.js') }}"></script>
+    
+    <!-- Scripts principales de CleanSA -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
